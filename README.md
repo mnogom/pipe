@@ -74,7 +74,7 @@ u.add(10)(u.divide(u.multiply(u.multiply(u.sub(8)(u.multiply(2)(3)())())(u.sub(1
 * Basic array operations
 ```python
 a = [1, 2, 3]
-b = u.concat(a)([4, 5])([6])  # [1, 2, 3, 4, 5, 6]
+b = u.concat(a)([4, 5])([6])()  # [1, 2, 3, 4, 5, 6]
 a == b  # False
 ```
 ```python
