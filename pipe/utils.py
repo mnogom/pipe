@@ -11,6 +11,26 @@ def casc(fn):
 
 
 @casc
+def is_even(num):
+    return num % 2 == 0
+
+
+@casc
+def is_gt(num_1, num_2):
+    return num_1 > num_2
+
+
+@casc
+def is_lt(x, y):
+    return x < y
+
+
+@casc
+def is_eq(x, y):
+    return x == y
+
+
+@casc
 def add(*args):
     return sum(args)
 
@@ -58,7 +78,7 @@ def push(array: list, *args):
         array.append(element)
 
 
-def mapf(fn):
+def map(fn):
     def inner(items):
         def executor():
             return [fn(item)() for item in items]
@@ -68,7 +88,7 @@ def mapf(fn):
     return inner
 
 
-def filterf(fn):
+def filter(fn):
     def inner(items):
         def executor():
             return [item for item in items if fn(item)()]
@@ -88,7 +108,7 @@ def iff(condition):
     return inner_true
 
 
-def reverse_args(fn):
+def revargs(fn):
     def inner_1(arg1):
         def inner_2(arg2):
             return fn(arg2)(arg1)
