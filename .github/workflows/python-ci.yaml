@@ -1,0 +1,27 @@
+name: python-ci
+
+on: [push]
+
+jobs:
+ build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+
+      - name: Setup dependencies
+        run: |
+          pip3 install poetry
+          make install
+
+      - name: Lint
+        run: make lint
+
+      - name: Coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make coverage
