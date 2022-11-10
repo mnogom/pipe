@@ -34,6 +34,22 @@ from pipe import utils as u
 
     fn(1)(2)(3)()  # 6
     ```
+  
+  * `stt` - set argument last argument to any position
+    ```python
+    @u.casc
+    def fn(a, b, c):
+        return (a + b) * c
+  
+    x = 1
+    
+    # Default calls 'fn'
+    fn(x)(2)(3)()  # 9
+    fn(2)(3)(x)()  # 5
+
+    # Place last argument to first position
+    u.stt(0)(fn)(2)(3)(x)()  # 9
+    ```
 * Predicates:
 ```python
 u.is_even(10)()  # True

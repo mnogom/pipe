@@ -11,6 +11,9 @@ if __name__ == '__main__':
     result = fn(x)(2)(3)()
     print(result)  # 9
 
+    result = fn(2)(3)(x)()
+    print(result)  # 5
+
     result = u.stt(0)(fn)(2)(3)(x)()
     print(result)  # 9
 
