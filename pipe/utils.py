@@ -29,7 +29,8 @@ def stt(position):
 
     TODO: Problem with this function you can see
       with using 'reduce' and 'reducef' in 'examples/utils_usage_02.py'
-      пропихивываем аргументы напрямую в executor, которого может и не быть у функции
+      пропихивываем аргументы напрямую в executor, которого может
+      и не быть у функции
     """
 
     def hidden_casc(fn):
