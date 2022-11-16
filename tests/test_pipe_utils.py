@@ -122,8 +122,10 @@ def test_set_to():
 
 
 def test_iff():
-    assert u.iff(True)(1)(2) == 1
-    assert u.iff(False)(1)(2) == 2
+    assert u.iff(True)(1)(2)() == 1
+    assert u.iff(False)(1)(2)() == 2
+
+    assert u.stt(0)(u.iff)('even')('odd')(u.is_even(2)())() == 'even'
 
 
 def test_map():

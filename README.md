@@ -101,27 +101,28 @@ a  # [1, 2, 3, 4, 5, 6]
 * Conditions
 ```python
 # Main functionality
-a = u.iff(True)(1)(2)  # 1
+a = u.iff(True)(1)(2)()  # 1
 
 # Complex examples:
 
 #  1. execute in 'iff'
 x = 5
-b = u.iff(u.is_gt(x)(2)())(u.multiply(x)(10)())(u.divide(x)(10)())  # 50
+b = u.iff(u.is_gt(x)(2)())(u.multiply(x)(10)())(u.divide(x)(10)())()  # 50
 
 #  2. execute after 'iff'
 x = 5
-b = u.iff(u.is_gt(x)(2)())(u.multiply(x)(10))(u.divide(x)(10))()  # 50
+b = u.iff(u.is_gt(x)(2)())(u.multiply(x)(10))(u.divide(x)(10))()()  # 50
 
 #  3. set output function and send arguments after 'iff':
 x = 5
-b = u.iff(u.is_gt(x)(2)())(u.multiply)(u.divide)(x)(10)()  # 50
+b = u.iff(u.is_gt(x)(2)())(u.multiply)(u.divide)(x)(10)()()  # 50
 
 ```
 * Higher-order functions
 ```python
 u.map(u.multiply(10))([1, 2, 3])()  # [10, 20, 30]
 u.filter(u.is_even)([1, 2, 3, 4])()  # [2, 4]
+u.reduce(u.add)([1, 2, 3])(0)()  # 6
 ```
 ---
 
@@ -137,6 +138,6 @@ pipe.result  # [4]
 pipe.steps  # '[1, 2, 3] >> [2, 3, 4] >> [2, 4] >> [4]'
 
 pipe = Pipe()
-pipe >> 2 >> u.iff(u.is_even(pipe.result)())('even')('odd')
+pipe >> 2 >> u.is_even >> u.stt(0)(u.iff)('even')('odd')
 pipe.result  # even
 ```

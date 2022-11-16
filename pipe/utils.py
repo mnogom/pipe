@@ -175,7 +175,10 @@ def reduce(fn, items, initial):
 def iff(condition):
     def inner_true(t):
         def inner_false(f):
-            return t if condition else f
+            def executor():
+                return t if condition else f
+
+            return executor
 
         return inner_false
 

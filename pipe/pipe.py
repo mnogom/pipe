@@ -6,6 +6,9 @@ class Pipe:
         self.__call_stack.append(next)
         return self
 
+    def __call__(self):
+        return self.result
+
     @staticmethod
     def __apply_fn(fn, arg=None):
         if callable(fn):
