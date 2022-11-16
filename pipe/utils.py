@@ -2,14 +2,17 @@ def casc(fn):
     """Make default function cascade-look."""
 
     def accumulator(*args):
+
         def executor(*new_arg):
+            if len(new_arg) > 1:
+                raise TypeError('Too many arguments. Expect only 1')
             if new_arg == ():
                 return fn(*args)
             return accumulator(*args, *new_arg)
 
         return executor
 
-    return accumulator
+    return accumulator()
 
 
 def revargs(fn):
@@ -25,22 +28,22 @@ def revargs(fn):
 def stt(position):
     """
     Set argument to any position
-    'stt(1)(fn)(2)(3)(x)' place x to 1st position in fn call.
-
-    TODO: Problem with this function you can see
-      with using 'reduce' and 'reducef' in 'examples/utils_usage_02.py'
-      пропихивываем аргументы напрямую в executor, которого может
-      и не быть у функции
+    'stt(0)(fn)(2)(3)(x)' place x to 1st position in fn call.
     """
 
     def hidden_casc(fn):
         def accumulator(*args):
             def executor(*new_arg):
                 if new_arg == ():
-                    updated_args = (*args[:position],
-                                    args[-1],
-                                    *args[position:-1])
-                    return fn(*updated_args)()
+                    updated_args = (
+                        *args[:position],
+                        args[-1],
+                        *args[position:-1],
+                    )
+                    current_fn = fn
+                    for arg in updated_args:
+                        current_fn = current_fn(arg)
+                    return current_fn()
                 return accumulator(*args, *new_arg)
 
             return executor
@@ -147,6 +150,7 @@ def filter(fn, items):
 #
 #     return inner
 
+
 @casc
 def reduce(fn, items, initial):
     result = fn(initial)
@@ -155,25 +159,23 @@ def reduce(fn, items, initial):
     return result()
 
 
-def reducef(fn):
-    def inner_1(items):
-        def inner_2(initial):
-            result = fn(initial)
-            for item in items:
-                result = result(item)
-            return result
-        return inner_2
-    return inner_1
+# def reduce(fn):
+#     def inner_1(items):
+#         def inner_2(initial):
+#             result = fn(initial)
+#             for item in items:
+#                 result = result(item)
+#             return result
+#
+#         return inner_2
+#
+#     return inner_1
 
-
-# @casc
-# def iff(condition, fn, gn):
-#     return fn if condition else gn
 
 def iff(condition):
-    def inner_true(fn):
-        def inner_false(gn):
-            return fn if condition else gn
+    def inner_true(t):
+        def inner_false(f):
+            return t if condition else f
 
         return inner_false
 

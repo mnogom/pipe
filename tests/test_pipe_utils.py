@@ -65,19 +65,60 @@ def test_push():
 def test_cascadate():
     fn_1 = u.casc(lambda x: x + 1)
     assert fn_1(2)() == 3
+
     fn_2 = u.casc(lambda x, y: x + y)
     assert fn_2(1)(2)() == 3
+
     fn_3 = u.casc(lambda *args: sum(args))
     assert fn_3(1)(2)(3)(4)(5)() == 15
 
     def fn_4(a, b, c, *args):
         return max(a, b, c, *args)
 
-    assert u.casc(fn_4)(1, 2, 3)() == 3
-    assert u.casc(fn_4)(1, 2, 3, 4, 5)() == 5
+    assert u.casc(fn_4)(1)(2)(3)() == 3
+    assert u.casc(fn_4)(1)(2)(3)(4)(5)() == 5
     with pytest.raises(TypeError) as error:
         u.casc(fn_4)(1)()
     assert 'missing' in str(error.value)
+    with pytest.raises(TypeError) as error:
+        u.casc(fn_4)(1, 2, 3)()
+    assert 'many arguments' in str(error.value)
+    with pytest.raises(TypeError) as error:
+        u.casc(fn_4)(1)(2, 3)()
+    assert 'many arguments' in str(error.value)
+
+    def fn_5():
+        return 5
+
+    assert u.casc(fn_5)() == 5
+
+
+def test_set_to():
+    @u.casc
+    def fn_1(a, b, c):
+        return (a - b) * c
+
+    def fn_2(a):
+        def inner_1(b):
+            def inner_2(c):
+                def executor():
+                    return (a - b) * c
+
+                return executor
+
+            return inner_2
+
+        return inner_1
+
+    assert fn_1(1)(2)(3)() == fn_2(1)(2)(3)()
+
+    assert u.stt(0)(fn_1)(1)(2)(10)() == 18
+    assert u.stt(1)(fn_1)(1)(2)(10)() == -18
+    assert u.stt(2)(fn_1)(1)(2)(10)() == -10
+
+    assert u.stt(0)(fn_2)(1)(2)(10)() == 18
+    assert u.stt(1)(fn_2)(1)(2)(10)() == -18
+    assert u.stt(2)(fn_2)(1)(2)(10)() == -10
 
 
 def test_iff():
