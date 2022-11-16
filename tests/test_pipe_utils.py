@@ -147,3 +147,8 @@ def test_filter():
 
     expected = [1, 2]
     assert u.filter(u.is_gt(3))(items)() == expected
+
+
+def test_reduce():
+    items = [1, 2, 3]
+    assert u.reduce(u.multiply)(items)(1)() == 6
