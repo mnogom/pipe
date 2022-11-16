@@ -41,6 +41,7 @@ def test_pipe_3():
      u.map(u.add(1)) >>
      u.filter(u.is_even) >>
      u.stt(1)(u.reduce)(u.add)(0))
+
     assert pipe() == 6
     assert pipe.steps == '[1, 2, 3] >> [2, 3, 4] >> [2, 4] >> 6'
 
@@ -51,5 +52,6 @@ def test_pipe_4():
      2 >>
      u.is_even >>
      u.stt(0)(u.iff)('even')('odd'))
-    assert pipe.steps == '2 >> True >> even'
+
     assert pipe() == 'even'
+    assert pipe.steps == '2 >> True >> even'
