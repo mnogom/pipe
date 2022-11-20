@@ -16,7 +16,7 @@ from pipe import utils as u
   * `revargs` - replace first argument and second 
     ```python
     x = 2
-    u.divide(x)(10)  # 0.2
+    u.divide(x)(10)()  # 0.2
     u.revargs(u.divide)(x)(10)()  # 5.0
 
     u.revargs(u.map)([1, 2, 3])(u.add(1))()  # [2, 3, 4]
