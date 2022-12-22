@@ -1,6 +1,3 @@
-from pipe import utils as u
-
-
 class Proxy:
     def __init__(self, fn):
         self.fn = fn
